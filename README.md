@@ -17,17 +17,19 @@ Move into the project directory:
 cd voice_ai_agents_using-Gemini_live_api
 ```
 
-# 📦 Step 1 — Create Virtual Environment
+📦 Step 1 — Create Virtual Environment
 
-### Windows
-```cmd
+Windows
+```bash
 python -m venv venv
+
 venv\Scripts\activate
 ```
 
-### macOS / Linux
+macOS / Linux
 ```bash
 python3 -m venv venv
+
 source venv/bin/activate
 ```
 
