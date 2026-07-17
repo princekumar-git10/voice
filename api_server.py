@@ -1,11 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+import os
 import subprocess
 import webbrowser
 from calendar_tool import book_meeting, check_availability
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/')
+def serve_index():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    return send_from_directory(base_dir, 'index.html')
 
 def open_local_app(app_name: str) -> dict:
     app_name_lower = app_name.lower().strip()
