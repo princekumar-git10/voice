@@ -6,14 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NovaVoice - AI Assistant</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
         :root {
-            --bg-color: #0f172a;
-            --surface: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
+            --bg-color: #030712;
+            --surface: rgba(17, 24, 39, 0.45);
+            --surface-hover: rgba(31, 41, 55, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.4);
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
             --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.4);
             --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.2);
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
         body {
@@ -21,26 +34,127 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: var(--font-sans);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient animated backgrounds */
+        .glow-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: pulse-glow 10s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #4f46e5;
+            animation-duration: 12s;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #06b6d4;
+            animation-duration: 15s;
+        }
+
+        .blob-3 {
+            top: 35%;
+            left: 25%;
+            width: 35vw;
+            height: 35vw;
+            background: #7c2d12;
+            animation-duration: 18s;
+            opacity: 0.06;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.15) translate(3%, 3%); }
+        }
+
+        .main-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem 2rem 2.5rem;
+            width: 90%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            z-index: 10;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .main-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .app-title-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .app-title-container h1 {
+            font-family: var(--font-display);
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+        }
+
+        .app-title-container p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin: 0;
+            font-weight: 400;
         }
 
         .status-badge {
-            position: absolute;
-            top: 2rem;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.03);
             padding: 0.5rem 1rem;
             border-radius: 999px;
-            font-size: 0.875rem;
+            font-size: 0.825rem;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            border: 1px solid #334155;
+            gap: 0.625rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
         }
 
         .dot {
@@ -48,26 +162,43 @@
             height: 8px;
             border-radius: 50%;
             background: var(--text-muted);
+            transition: all 0.3s ease;
         }
 
         .dot.live {
             background: var(--success);
-            box-shadow: 0 0 10px var(--success);
+            box-shadow: 0 0 12px var(--success);
+            animation: pulse-dot 1.5s infinite alternate;
         }
 
         .dot.speaking {
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            background: #60a5fa;
+            box-shadow: 0 0 12px #60a5fa;
+            animation: pulse-dot 1.2s infinite alternate;
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
         .orb-container {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .orb-container.speaking-mode {
+            border-color: rgba(96, 165, 250, 0.2);
+            background: rgba(37, 99, 235, 0.03);
         }
 
         .call-button {
@@ -75,74 +206,122 @@
             height: 100px;
             border-radius: 50%;
             border: none;
-            background: var(--surface);
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
             color: var(--text-main);
-            font-size: 2rem;
+            font-size: 2.25rem;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            transition: background 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .call-button:hover {
+            transform: translateY(-2px) scale(1.03);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+        }
+
+        .call-button:active {
+            transform: translateY(1px) scale(0.98);
         }
 
         /* The visualizer will dynamically inject scale values here */
         .call-button.active {
-            background: var(--danger);
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
             color: white;
+            box-shadow: 0 8px 32px var(--danger-glow);
             transform: scale(var(--mic-scale, 1));
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .ring {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 2px solid var(--accent);
+            border: 2px solid #3b82f6;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
             opacity: 0;
             pointer-events: none;
             transform: scale(var(--ai-scale, 1));
-            transition: transform 0.05s ease-out, opacity 0.1s;
+            transition: transform 0.05s ease-out, opacity 0.2s ease;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
         .speaking-mode .ring {
             opacity: 0.8;
+            border-color: #60a5fa;
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.4);
         }
 
         .transcript-container {
-            width: 90%;
-            max-width: 500px;
-            height: 300px;
-            background: var(--surface);
+            width: 100%;
+            height: 280px;
+            background: rgba(15, 23, 42, 0.3);
             border-radius: 16px;
-            padding: 1rem;
+            padding: 1.25rem;
             overflow-y: auto;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar Styling */
+        .transcript-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .transcript-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .transcript-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .transcript-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .message {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            max-width: 80%;
+            font-size: 0.925rem;
+            line-height: 1.6;
+            padding: 0.75rem 1.125rem;
+            border-radius: 16px;
+            max-width: 85%;
             width: fit-content;
             word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: message-appear 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes message-appear {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .user-msg {
-            background: #334155;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             align-self: flex-end;
-            color: white;
+            color: #f3f4f6;
             border-bottom-right-radius: 4px;
         }
 
         .ai-msg {
-            background: rgba(59, 130, 246, 0.1);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(6, 182, 212, 0.05) 100%);
             border: 1px solid rgba(59, 130, 246, 0.2);
             align-self: flex-start;
-            color: #60a5fa;
+            color: #93c5fd;
             border-bottom-left-radius: 4px;
         }
 
@@ -150,80 +329,368 @@
             align-self: center;
             font-size: 0.8rem;
             color: var(--text-muted);
-            font-style: italic;
+            font-style: normal;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            letter-spacing: 0.02em;
+            text-align: center;
         }
 
         .tool-card {
             align-self: center;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px dashed var(--success);
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
             color: #34d399;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            width: 90%;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            border-radius: 12px;
+            padding: 0.875rem 1.125rem;
+            width: 100%;
             box-sizing: border-box;
             white-space: pre-wrap;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--success);
+        }
+
+        /* Setup Modal & Card */
         .setup-modal {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 100;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            transition: all 0.4s ease;
         }
 
         .setup-modal.hidden {
-            display: none;
+            display: none !important;
+        }
+
+        .setup-card {
+            background: rgba(17, 24, 39, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--card-shadow), 0 0 80px rgba(59, 130, 246, 0.1);
+            box-sizing: border-box;
+            text-align: center;
+            transform: scale(1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .setup-logo {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--accent-gradient);
+            border-radius: 24px;
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+
+        .setup-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            background: linear-gradient(135deg, #ffffff 50%, #d1d5db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .setup-subtitle {
+            font-size: 0.925rem;
+            color: var(--text-muted);
+            margin: 0 0 2rem 0;
+            font-weight: 400;
+        }
+
+        .input-wrapper {
+            width: 100%;
+            position: relative;
+            margin-bottom: 1.5rem;
         }
 
         .api-input {
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(3, 7, 18, 0.6);
             color: white;
-            width: 300px;
-            margin-bottom: 1rem;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .api-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(3, 7, 18, 0.8);
         }
 
         .btn-start {
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            background: var(--success);
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            font-size: 1rem;
             cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-start:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-start:active {
+            transform: translateY(1px);
+        }
+
+        .key-hint {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .key-hint:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* Image Lightbox Modal */
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .image-modal.hidden {
+            display: none !important;
+        }
+
+        .image-modal-content {
+            background: rgba(17, 24, 39, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--card-shadow), 0 0 100px rgba(96, 165, 250, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            animation: modal-zoom-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        @keyframes modal-zoom-in {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .image-modal-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .image-modal-header h3 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f3f4f6;
+        }
+
+        .image-modal-header p {
+            margin: 0.25rem 0 0 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-style: italic;
+            word-wrap: break-word;
+        }
+
+        .image-modal-body {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .image-modal-body img {
+            max-width: 100%;
+            max-height: 50vh;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+        }
+
+        .image-modal-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-download {
+            display: inline-block;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+            transform: translateY(-1px);
         }
     </style>
 </head>
 
 <body>
 
+    <div class="glow-bg">
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+        <div class="glow-blob blob-3"></div>
+    </div>
+
     <div id="setupModal" class="setup-modal">
-        <h2>Welcome to NovaVoice</h2>
-        <input type="password" id="apiKey" class="api-input" placeholder="Enter Gemini API Key (AIza...)">
-        <button id="startSessionBtn" class="btn-start">Connect to Agent</button>
+        <div class="setup-card">
+            <div class="setup-logo">🎙️</div>
+            <h2>Welcome to NovaVoice</h2>
+            <p class="setup-subtitle">Connect your Gemini Live session to begin</p>
+            <div class="input-wrapper">
+                <input type="password" id="apiKey" class="api-input" placeholder="Enter Gemini API Key (AIza...)">
+            </div>
+            <button id="startSessionBtn" class="btn-start">Connect to Agent</button>
+            <a href="https://aistudio.google.com/" target="_blank" class="key-hint">Need an API key? Get one from Google AI Studio</a>
+        </div>
     </div>
 
-    <div class="status-badge" id="statusBadge">
-        <div class="dot" id="statusDot"></div>
-        <span id="statusText">Disconnected</span>
+    <div class="main-card">
+        <div class="status-badge" id="statusBadge">
+            <div class="dot" id="statusDot"></div>
+            <span id="statusText">Disconnected</span>
+        </div>
+
+        <div class="app-title-container">
+            <h1>NovaVoice AI</h1>
+            <p>Real-time conversational voice assistant</p>
+        </div>
+
+        <div class="orb-container" id="orbContainer">
+            <div class="ring"></div>
+            <button class="call-button" id="callBtn">🎙️</button>
+        </div>
+
+        <div class="transcript-container" id="transcript">
+            <div class="message system-msg">Waiting to connect...</div>
+        </div>
     </div>
 
-    <div class="orb-container" id="orbContainer">
-        <div class="ring"></div>
-        <button class="call-button" id="callBtn">🎙️</button>
-    </div>
-
-    <div class="transcript-container" id="transcript">
-        <div class="message system-msg">Waiting to connect...</div>
+    <!-- Image Preview Lightbox Modal -->
+    <div id="imageModal" class="image-modal hidden">
+        <div class="image-modal-content">
+            <button class="image-modal-close" id="closeImageModalBtn">&times;</button>
+            <div class="image-modal-header">
+                <h3>🎨 Generated Artwork</h3>
+                <p id="imageModalPrompt">"Prompt description"</p>
+            </div>
+            <div class="image-modal-body">
+                <img id="imageModalSrc" src="" alt="Generated artwork">
+            </div>
+            <div class="image-modal-footer">
+                <a id="downloadImageBtn" href="#" download="novavoice-artwork.png" class="btn-download" target="_blank">Download Image</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -235,7 +702,12 @@
             statusText: document.getElementById('statusText'),
             statusDot: document.getElementById('statusDot'),
             transcript: document.getElementById('transcript'),
-            orbContainer: document.getElementById('orbContainer')
+            orbContainer: document.getElementById('orbContainer'),
+            imageModal: document.getElementById('imageModal'),
+            closeImageModalBtn: document.getElementById('closeImageModalBtn'),
+            imageModalPrompt: document.getElementById('imageModalPrompt'),
+            imageModalSrc: document.getElementById('imageModalSrc'),
+            downloadImageBtn: document.getElementById('downloadImageBtn')
         };
 
         let isCallActive = false;
@@ -272,9 +744,11 @@
                 // 🧠 CONTEXT INJECTION: Give Gemini the exact date and timezone
                 const currentDate = new Date().toString();
                 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const systemPrompt = `You are a professional, helpful booking assistant. 
+                const systemPrompt = `You are a professional, helpful assistant. 
                 CRITICAL CONTEXT: The current date and time is ${currentDate}. The user is in the ${timeZone} timezone. 
-                Always check availability first before booking a meeting to prevent double-booking. When booking or checking, format dates strictly to ISO 8601 offset to the user's timezone.`;
+                Always check availability first before booking a meeting to prevent double-booking. When booking or checking, format dates strictly to ISO 8601 offset to the user's timezone.
+                You can also open desktop applications (like WhatsApp, Chrome, Spotify, Calculator, Notes) or websites (like YouTube, Gmail) on the user's computer when requested using the open_application tool.
+                You can also generate/make images of things using the generate_image tool when requested by the user.`;
 
                 ws.send(JSON.stringify({
                     setup: {
@@ -309,6 +783,28 @@
                                         },
                                         required: ["title", "date_time", "guest_email"]
                                     }
+                                },
+                                {
+                                    name: "open_application",
+                                    description: "Opens a basic desktop application (e.g., WhatsApp, Chrome, Spotify, Calculator, Notes) or a website (e.g., YouTube, Gmail) on the user's computer.",
+                                    parameters: {
+                                        type: "OBJECT",
+                                        properties: {
+                                            application_name: { type: "STRING", description: "Name of the application or website to open (e.g., WhatsApp, YouTube, Chrome, Spotify)" }
+                                        },
+                                        required: ["application_name"]
+                                    }
+                                },
+                                {
+                                    name: "generate_image",
+                                    description: "Generates an image of something based on user prompt and shows it on the screen.",
+                                    parameters: {
+                                        type: "OBJECT",
+                                        properties: {
+                                            prompt: { type: "STRING", description: "Detailed description of the image to generate" }
+                                        },
+                                        required: ["prompt"]
+                                    }
                                 }
                             ]
                         }]
@@ -330,13 +826,19 @@
                         let endpoint = "";
                         let visualOutput = "";
 
-                        // Handle logic for both tools dynamically
+                        // Handle logic for tools dynamically
                         if (call.name === "book_meeting") {
                             endpoint = "http://127.0.0.1:5000/api/book_meeting";
                             visualOutput = `⚙️ Action: book_meeting()\n↳ Title: ${args.title}\n↳ Time: ${args.date_time}`;
                         } else if (call.name === "check_availability") {
                             endpoint = "http://127.0.0.1:5000/api/check_availability";
                             visualOutput = `🔍 Action: check_availability()\n↳ Date: ${args.date}`;
+                        } else if (call.name === "open_application") {
+                            endpoint = "http://127.0.0.1:5000/api/open_application";
+                            visualOutput = `🚀 Action: open_application()\n↳ App: ${args.application_name}`;
+                        } else if (call.name === "generate_image") {
+                            endpoint = "http://127.0.0.1:5000/api/generate_image";
+                            visualOutput = `🎨 Action: generate_image()\n↳ Prompt: ${args.prompt}`;
                         }
 
                         addToolCard(visualOutput);
@@ -348,6 +850,11 @@
                                 body: JSON.stringify(args)
                             });
                             const data = await res.json();
+                            
+                            if (call.name === "generate_image" && data.image_url) {
+                                addImageMessage(data.image_url, args.prompt, "ai-msg");
+                            }
+                            
                             responses.push({ id: call.id, name: call.name, response: { output: data.result } });
                         } catch (error) {
                             console.error("Backend Error:", error);
@@ -527,6 +1034,36 @@
             source.onended = () => { activeSources = activeSources.filter(s => s !== source); };
         }
 
+        function showImageModal(imageUrl, prompt) {
+            UI.imageModalSrc.src = imageUrl;
+            UI.imageModalPrompt.innerText = `"${prompt}"`;
+            UI.downloadImageBtn.href = imageUrl;
+            UI.imageModal.classList.remove('hidden');
+        }
+
+        function addImageMessage(imageUrl, prompt, typeClass) {
+            const container = document.createElement('div');
+            container.className = `message ${typeClass}`;
+            container.style.cursor = 'pointer';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.gap = '0.5rem';
+            container.style.textDecoration = 'underline';
+            container.innerHTML = `🎨 <strong>Generated:</strong> "${prompt}" (Click to view)`;
+            
+            container.addEventListener('click', () => {
+                showImageModal(imageUrl, prompt);
+            });
+
+            UI.transcript.appendChild(container);
+            UI.transcript.scrollTop = UI.transcript.scrollHeight;
+            activeBubble = null;
+            activeRole = null;
+            
+            // Automatically open lightbox modal
+            showImageModal(imageUrl, prompt);
+        }
+
         function updateStatus(text, dotClass) {
             UI.statusText.innerText = text; UI.statusDot.className = `dot ${dotClass}`;
         }
@@ -555,7 +1092,19 @@
             }
             UI.transcript.scrollTop = UI.transcript.scrollHeight;
         }
+
+        // Lightbox Event Listeners
+        UI.closeImageModalBtn.addEventListener('click', () => {
+            UI.imageModal.classList.add('hidden');
+        });
+
+        UI.imageModal.addEventListener('click', (e) => {
+            if (e.target === UI.imageModal) {
+                UI.imageModal.classList.add('hidden');
+            }
+        });
     </script>
+
 </body>
 
 </html>
