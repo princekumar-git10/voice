@@ -823,21 +823,25 @@
                         const args = call.args;
                         console.log("🎯 Tool Triggered:", call.name, args);
 
+                        const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+                            ? 'http://127.0.0.1:5000' 
+                            : '';
+
                         let endpoint = "";
                         let visualOutput = "";
 
                         // Handle logic for tools dynamically
                         if (call.name === "book_meeting") {
-                            endpoint = "http://127.0.0.1:5000/api/book_meeting";
+                            endpoint = `${apiBase}/api/book_meeting`;
                             visualOutput = `⚙️ Action: book_meeting()\n↳ Title: ${args.title}\n↳ Time: ${args.date_time}`;
                         } else if (call.name === "check_availability") {
-                            endpoint = "http://127.0.0.1:5000/api/check_availability";
+                            endpoint = `${apiBase}/api/check_availability`;
                             visualOutput = `🔍 Action: check_availability()\n↳ Date: ${args.date}`;
                         } else if (call.name === "open_application") {
-                            endpoint = "http://127.0.0.1:5000/api/open_application";
+                            endpoint = `${apiBase}/api/open_application`;
                             visualOutput = `🚀 Action: open_application()\n↳ App: ${args.application_name}`;
                         } else if (call.name === "generate_image") {
-                            endpoint = "http://127.0.0.1:5000/api/generate_image";
+                            endpoint = `${apiBase}/api/generate_image`;
                             visualOutput = `🎨 Action: generate_image()\n↳ Prompt: ${args.prompt}`;
                         }
 
@@ -853,6 +857,10 @@
                             
                             if (call.name === "generate_image" && data.image_url) {
                                 addImageMessage(data.image_url, args.prompt, "ai-msg");
+                            }
+
+                            if (call.name === "open_application" && data.url) {
+                                window.open(data.url, '_blank');
                             }
                             
                             responses.push({ id: call.id, name: call.name, response: { output: data.result } });

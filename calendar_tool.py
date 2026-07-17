@@ -7,9 +7,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_calendar_service():
-    if not os.path.exists('token.json'):
-        raise Exception("Calendar is not authenticated. Missing token.json.")
-    creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar.events'])
+    # 1. Try to load token from environment variable first (cloud-native)
+    token_json_env = os.getenv("GOOGLE_TOKEN_JSON")
+    if token_json_env:
+        import json
+        info = json.loads(token_json_env)
+        creds = Credentials.from_authorized_user_info(info, ['https://www.googleapis.com/auth/calendar.events'])
+        return build('calendar', 'v3', credentials=creds)
+
+    # 2. Fall back to local file load resolved relative to this script's directory
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    token_path = os.path.join(base_dir, 'token.json')
+
+    if not os.path.exists(token_path):
+        raise Exception("Calendar is not authenticated. Missing token.json or GOOGLE_TOKEN_JSON env variable.")
+    creds = Credentials.from_authorized_user_file(token_path, ['https://www.googleapis.com/auth/calendar.events'])
     return build('calendar', 'v3', credentials=creds)
 
 def check_availability(date_iso: str) -> str:
