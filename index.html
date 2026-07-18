@@ -9,21 +9,21 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
         :root {
-            --bg-color: #030712;
-            --surface: rgba(17, 24, 39, 0.45);
-            --surface-hover: rgba(31, 41, 55, 0.6);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 255, 255, 0.15);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #2563eb;
-            --accent-glow: rgba(37, 99, 235, 0.4);
-            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.4);
+            --bg-color: #06060a;
+            --surface: rgba(10, 11, 16, 0.75);
+            --surface-hover: rgba(18, 20, 28, 0.85);
+            --border-color: rgba(239, 68, 68, 0.12);
+            --border-hover: rgba(239, 68, 68, 0.25);
+            --text-main: #f1f5f9;
+            --text-muted: #889bb0;
+            --accent: #ef4444;
+            --accent-glow: rgba(239, 68, 68, 0.3);
+            --accent-gradient: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+            --danger: #b91c1c;
+            --danger-glow: rgba(185, 28, 28, 0.4);
             --success: #10b981;
             --success-glow: rgba(16, 185, 129, 0.2);
-            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
             --font-display: 'Space Grotesk', sans-serif;
             --font-sans: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
@@ -69,8 +69,9 @@
             left: -10%;
             width: 50vw;
             height: 50vw;
-            background: #4f46e5;
+            background: #ef4444;
             animation-duration: 12s;
+            opacity: 0.08;
         }
 
         .blob-2 {
@@ -78,8 +79,9 @@
             right: -10%;
             width: 50vw;
             height: 50vw;
-            background: #06b6d4;
+            background: #7f1d1d;
             animation-duration: 15s;
+            opacity: 0.08;
         }
 
         .blob-3 {
@@ -87,9 +89,9 @@
             left: 25%;
             width: 35vw;
             height: 35vw;
-            background: #7c2d12;
+            background: #311010;
             animation-duration: 18s;
-            opacity: 0.06;
+            opacity: 0.05;
         }
 
         @keyframes pulse-glow {
@@ -103,7 +105,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 3rem 2rem 2.5rem;
+            padding: 2.5rem 2rem 2rem;
             width: 90%;
             max-width: 520px;
             display: flex;
@@ -118,6 +120,46 @@
 
         .main-card:hover {
             border-color: var(--border-hover);
+        }
+
+        .main-card-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .main-card-right {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .main-card {
+                max-width: 960px;
+                flex-direction: row;
+                align-items: stretch;
+                gap: 3.5rem;
+                padding: 3.5rem 3rem;
+            }
+
+            .main-card-left {
+                width: 320px;
+                flex-shrink: 0;
+                border-right: 1px solid rgba(255, 255, 255, 0.05);
+                padding-right: 3rem;
+                justify-content: center;
+            }
+
+            .main-card-right {
+                flex-grow: 1;
+            }
+            
+            .transcript-container {
+                height: 380px !important;
+            }
         }
 
         .app-title-container {
@@ -184,8 +226,8 @@
 
         .orb-container {
             position: relative;
-            width: 160px;
-            height: 160px;
+            width: 220px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -197,32 +239,32 @@
         }
 
         .orb-container.speaking-mode {
-            border-color: rgba(96, 165, 250, 0.2);
-            background: rgba(37, 99, 235, 0.03);
+            border-color: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.02);
         }
 
         .call-button {
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             border: none;
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(27, 28, 36, 0.9) 0%, rgba(12, 13, 18, 0.9) 100%);
             color: var(--text-main);
-            font-size: 2.25rem;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px;
         }
 
         .call-button:hover {
-            transform: translateY(-2px) scale(1.03);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.1);
         }
 
         .call-button:active {
@@ -231,25 +273,24 @@
 
         /* The visualizer will dynamically inject scale values here */
         .call-button.active {
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-            color: white;
-            box-shadow: 0 8px 32px var(--danger-glow);
+            background: linear-gradient(135deg, rgba(15, 15, 22, 0.95) 0%, rgba(5, 5, 10, 0.95) 100%);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.05);
             transform: scale(var(--mic-scale, 1));
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(239, 68, 68, 0.35);
         }
 
         .ring {
             position: absolute;
-            width: 120px;
-            height: 120px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            border: 2px solid #3b82f6;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border: 2px solid #ef4444;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%);
             opacity: 0;
             pointer-events: none;
             transform: scale(var(--ai-scale, 1));
             transition: transform 0.05s ease-out, opacity 0.2s ease;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
         }
 
         .speaking-mode .ring {
@@ -631,6 +672,35 @@
             box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
             transform: translateY(-1px);
         }
+
+        .wake-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .wake-hint.listening {
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #ef4444;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.1);
+        }
+
+        .wake-hint.active {
+            border-color: rgba(0, 255, 204, 0.25);
+            color: #00ffcc;
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.1);
+        }
     </style>
 </head>
 
@@ -656,23 +726,71 @@
     </div>
 
     <div class="main-card">
-        <div class="status-badge" id="statusBadge">
-            <div class="dot" id="statusDot"></div>
-            <span id="statusText">Disconnected</span>
+        <!-- Left Section: Robot Status & Face Controls -->
+        <div class="main-card-left">
+            <div class="status-badge" id="statusBadge">
+                <div class="dot" id="statusDot"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+
+            <div class="app-title-container">
+                <h1>Mac AI</h1>
+                <p>Futuristic Conversational Voice Assistant</p>
+            </div>
+
+            <div class="orb-container" id="orbContainer">
+                <div class="ring"></div>
+                <button class="call-button" id="callBtn">
+                    <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                        <defs>
+                            <filter id="glow-red" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1.5" />
+                        <g id="ultron-face">
+                            <!-- Forehead plate -->
+                            <path d="M 28,25 L 72,25 L 75,32 L 62,38 L 50,42 L 38,38 L 25,32 Z" fill="#1b1c24" stroke="#3b3d4f" stroke-width="1" />
+                            <!-- Brow ridge -->
+                            <path d="M 22,40 L 45,46 L 50,42 L 55,46 L 78,40 M 50,42 L 50,25" stroke="#0a0a0f" stroke-width="2.5" fill="none" />
+                            <!-- Cheek plates -->
+                            <path d="M 18,36 L 22,50 L 32,65 L 38,55 L 26,43 Z" fill="#0c0d12" stroke="#3b3d4f" stroke-width="0.75" />
+                            <path d="M 82,36 L 78,50 L 68,65 L 62,55 L 74,43 Z" fill="#0c0d12" stroke="#3b3d4f" stroke-width="0.75" />
+                            <!-- Nose plate -->
+                            <polygon points="46,45 54,45 50,56" fill="#1b1c24" stroke="#0a0a0f" stroke-width="0.75" />
+                            <!-- Slanted glowing eyes -->
+                            <polygon id="ultron-eye-left" points="26,44 42,47 39,42 28,41" fill="#ef4444" filter="url(#glow-red)" />
+                            <polygon id="ultron-eye-right" points="74,44 58,47 61,42 72,41" fill="#ef4444" filter="url(#glow-red)" />
+                            <!-- Upper jaw -->
+                            <path d="M 32,56 L 68,56 L 62,65 L 38,65 Z" fill="#0c0d12" stroke="#1b1c24" stroke-width="1" />
+                            <!-- Glowing red mouth grill -->
+                            <path id="ultron-mouth-grill" d="M 36,60 L 64,60 M 39,63 L 61,63" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" filter="url(#glow-red)" />
+                            <g id="mouth-vertical-slits" stroke="#070303" stroke-width="1">
+                                <line x1="42" y1="58" x2="42" y2="65" />
+                                <line x1="46" y1="58" x2="46" y2="65" />
+                                <line x1="50" y1="58" x2="50" y2="65" />
+                                <line x1="54" y1="58" x2="54" y2="65" />
+                                <line x1="58" y1="58" x2="58" y2="65" />
+                            </g>
+                            <!-- Chin plate -->
+                            <path d="M 38,66 L 62,66 L 55,80 L 45,80 Z" fill="#1b1c24" stroke="#3b3d4f" stroke-width="1" />
+                            <!-- Cybernetic details -->
+                            <path d="M 23,54 Q 30,58 35,52" stroke="rgba(239,68,68,0.3)" stroke-width="0.75" fill="none" id="cheek-detail-l" />
+                            <path d="M 77,54 Q 70,58 65,52" stroke="rgba(239,68,68,0.3)" stroke-width="0.75" fill="none" id="cheek-detail-r" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <div class="wake-hint" id="wakeHint">🎤 Say "Hey Mac" to wake him</div>
         </div>
 
-        <div class="app-title-container">
-            <h1>NovaVoice AI</h1>
-            <p>Real-time conversational voice assistant</p>
-        </div>
-
-        <div class="orb-container" id="orbContainer">
-            <div class="ring"></div>
-            <button class="call-button" id="callBtn">🎙️</button>
-        </div>
-
-        <div class="transcript-container" id="transcript">
-            <div class="message system-msg">Waiting to connect...</div>
+        <!-- Right Section: Scrolling Conversation -->
+        <div class="main-card-right">
+            <div class="transcript-container" id="transcript"></div>
         </div>
     </div>
 
@@ -730,6 +848,8 @@
             const key = UI.apiKeyInput.value.trim();
             if (!key) return alert("API Key is required.");
 
+            localStorage.setItem('gemini_live_api_key', key);
+
             UI.setupModal.classList.add('hidden');
             updateStatus('Connecting...', 'speaking');
             addMessage('Initializing connection to Gemini...', 'system-msg');
@@ -739,12 +859,14 @@
 
             ws.onopen = () => {
                 updateStatus('Ready', 'muted');
-                addMessage('System ready. Tap the mic to call.', 'system-msg');
+                addMessage('System ready. Tap face or say "Hey Mac" to start.', 'system-msg');
+                startWakeWordDetection();
 
                 // 🧠 CONTEXT INJECTION: Give Gemini the exact date and timezone
                 const currentDate = new Date().toString();
                 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const systemPrompt = `You are a professional, helpful assistant. 
+                const systemPrompt = `You are Mac, a helpful and premium AI voice assistant running on a futuristic robotic platform.
+                Speak concisely, directly, and naturally. Keep your responses short for swift vocal interactions.
                 CRITICAL CONTEXT: The current date and time is ${currentDate}. The user is in the ${timeZone} timezone. 
                 Always check availability first before booking a meeting to prevent double-booking. When booking or checking, format dates strictly to ISO 8601 offset to the user's timezone.
                 You can also open desktop applications (like WhatsApp, Chrome, Spotify, Calculator, Notes) or websites (like YouTube, Gmail) on the user's computer when requested using the open_application tool.
@@ -755,7 +877,7 @@
                         model: "models/gemini-3.1-flash-live-preview",
                         generationConfig: {
                             responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Charon" } } }
+                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } }
                         },
                         systemInstruction: { parts: [{ text: systemPrompt }] },
                         tools: [{
@@ -907,16 +1029,39 @@
                     }
                 }
             };
+
+            ws.onclose = () => {
+                updateStatus('Disconnected', 'muted');
+                addMessage('Connection closed.', 'system-msg');
+                stopWakeWordDetection();
+            };
+
+            ws.onerror = (e) => {
+                console.error("WebSocket error:", e);
+                updateStatus('Connection Error', 'muted');
+                addMessage('Connection error occurred.', 'system-msg');
+                stopWakeWordDetection();
+            };
         });
 
         UI.callBtn.addEventListener('click', async () => {
             isCallActive = !isCallActive;
 
             if (isCallActive) {
+                // Stop wake word listener while call is active
+                stopWakeWordDetection();
+
                 UI.callBtn.classList.add('active');
-                UI.callBtn.innerHTML = '⏹️';
-                updateStatus('Listening...', 'live');
-                addMessage('Microphone active. Say hello!', 'system-msg');
+                updateStatus('Mac Listening...', 'live');
+                addMessage('Session active. Talk to Mac!', 'system-msg');
+
+                // Glow eyes cyan instantly when active
+                const eyeLeft = document.getElementById('ultron-eye-left');
+                const eyeRight = document.getElementById('ultron-eye-right');
+                if (eyeLeft && eyeRight) {
+                    eyeLeft.style.fill = '#00ffcc';
+                    eyeRight.style.fill = '#00ffcc';
+                }
 
                 try {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
@@ -952,16 +1097,18 @@
                     scriptProcessor.connect(audioContext.destination);
 
                 } catch (err) {
+                    console.error("Mic Access Error:", err);
                     isCallActive = false;
                     UI.callBtn.classList.remove('active');
-                    UI.callBtn.innerHTML = '🎙️';
+                    resetUltronFace();
                     updateStatus('Ready', 'muted');
+                    startWakeWordDetection();
                 }
             } else {
                 UI.callBtn.classList.remove('active');
-                UI.callBtn.innerHTML = '🎙️';
                 UI.orbContainer.classList.remove('speaking-mode');
                 updateStatus('Call Ended', 'muted');
+                resetUltronFace();
 
                 if (visualizerId) cancelAnimationFrame(visualizerId);
                 UI.callBtn.style.setProperty('--mic-scale', '1');
@@ -970,6 +1117,9 @@
                 if (scriptProcessor) scriptProcessor.disconnect();
                 if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
                 if (audioContext) audioContext.close();
+
+                // Restart wake word listener after call ends
+                startWakeWordDetection();
             }
         });
 
@@ -988,12 +1138,29 @@
                 const micVol = micData.reduce((a, b) => a + b, 0) / micData.length;
                 const aiVol = aiData.reduce((a, b) => a + b, 0) / aiData.length;
 
-                // Map volume (0-255) to scale factor (1.0 to 1.3)
-                const micScale = 1 + (micVol / 255) * 0.15;
-                const aiScale = 1 + (aiVol / 255) * 0.8;
+                // Map volume (0-255) to scale factor
+                const micScale = 1 + (micVol / 255) * 0.12;
+                const aiScale = 1 + (aiVol / 255) * 0.45;
 
                 UI.callBtn.style.setProperty('--mic-scale', micScale);
                 UI.orbContainer.style.setProperty('--ai-scale', aiScale);
+
+                // Animate Ultron Eyes based on mic activity (user speaking)
+                const eyeLeft = document.getElementById('ultron-eye-left');
+                const eyeRight = document.getElementById('ultron-eye-right');
+                if (eyeLeft && eyeRight) {
+                    const micVal = 0.5 + (micVol / 255) * 0.5;
+                    eyeLeft.style.opacity = micVal;
+                    eyeRight.style.opacity = micVal;
+                }
+
+                // Animate Ultron Mouth Grill based on AI voice output (Mac speaking)
+                const mouthGrill = document.getElementById('ultron-mouth-grill');
+                if (mouthGrill) {
+                    const aiVal = 0.3 + (aiVol / 255) * 0.7;
+                    mouthGrill.style.opacity = aiVal;
+                    mouthGrill.style.strokeWidth = (1.5 + (aiVol / 255) * 3).toFixed(2);
+                }
 
                 visualizerId = requestAnimationFrame(render);
             }
@@ -1088,6 +1255,7 @@
             }
         }
         function addMessage(text, typeClass, isChunk = false) {
+            if (typeClass === 'system-msg') return;
             if (isChunk) {
                 if (activeBubble && activeRole === typeClass) {
                     activeBubble.innerText += text; UI.transcript.scrollTop = UI.transcript.scrollHeight; return;
@@ -1101,6 +1269,153 @@
             UI.transcript.scrollTop = UI.transcript.scrollHeight;
         }
 
+        // 🎙️ WAKE WORD SYSTEM & SYNTH CHIMES
+        let wakeWordRecognizer = null;
+        let isListeningForWake = false;
+
+        function startWakeWordDetection() {
+            if (wakeWordRecognizer) return;
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.warn("SpeechRecognition not supported in this browser.");
+                const wakeHintEl = document.getElementById('wakeHint');
+                if (wakeHintEl) wakeHintEl.innerText = "🎤 Speech recognition not supported in browser";
+                return;
+            }
+
+            wakeWordRecognizer = new SpeechRecognition();
+            wakeWordRecognizer.continuous = true;
+            wakeWordRecognizer.interimResults = true;
+            wakeWordRecognizer.lang = 'en-US';
+
+            wakeWordRecognizer.onresult = (event) => {
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    const transcript = event.results[i][0].transcript.toLowerCase();
+                    console.log("Wake word listening:", transcript);
+                    
+                    // Detect "Hey Mac" or variation matches
+                    if (transcript.includes('hey mac') || transcript.includes('hey max') || transcript.includes('hay mac') || transcript.includes('mac') || transcript.includes('hey mark')) {
+                        console.log("Wake word match detected!");
+                        triggerWakeCall();
+                        break;
+                    }
+                }
+            };
+
+            wakeWordRecognizer.onerror = (e) => {
+                console.error("SpeechRec Error:", e.error);
+                if (e.error === 'not-allowed') {
+                    const wakeHintEl = document.getElementById('wakeHint');
+                    if (wakeHintEl) wakeHintEl.innerText = "❌ Speech permission denied";
+                }
+            };
+
+            wakeWordRecognizer.onend = () => {
+                if (isListeningForWake && !isCallActive) {
+                    try {
+                        wakeWordRecognizer.start();
+                    } catch (err) {
+                        console.error("Failed to restart speech recognition:", err);
+                    }
+                }
+            };
+
+            isListeningForWake = true;
+            try {
+                wakeWordRecognizer.start();
+                updateWakeHintUI('listening');
+            } catch (err) {
+                console.error("SpeechRec start error:", err);
+            }
+        }
+
+        function stopWakeWordDetection() {
+            isListeningForWake = false;
+            if (wakeWordRecognizer) {
+                try {
+                    wakeWordRecognizer.stop();
+                } catch (e) {}
+                wakeWordRecognizer = null;
+            }
+            updateWakeHintUI('active');
+        }
+
+        function triggerWakeCall() {
+            if (!isCallActive) {
+                // Glow eye bright cyan instantly
+                const eyeLeft = document.getElementById('ultron-eye-left');
+                const eyeRight = document.getElementById('ultron-eye-right');
+                if (eyeLeft && eyeRight) {
+                    eyeLeft.style.fill = '#00ffcc';
+                    eyeRight.style.fill = '#00ffcc';
+                }
+
+                playWakeChime();
+
+                setTimeout(() => {
+                    UI.callBtn.click();
+                }, 600);
+            }
+        }
+
+        function playWakeChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.35);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function updateWakeHintUI(state) {
+            const el = document.getElementById('wakeHint');
+            if (!el) return;
+
+            if (state === 'listening') {
+                el.className = 'wake-hint listening';
+                el.innerHTML = '⚡ Waiting for "Hey Mac"...';
+            } else if (state === 'active') {
+                el.className = 'wake-hint active';
+                el.innerHTML = '🔊 Mac is listening...';
+            } else {
+                el.className = 'wake-hint';
+                el.innerHTML = '🎤 Say "Hey Mac" to wake him';
+            }
+        }
+
+        function resetUltronFace() {
+            const eyeLeft = document.getElementById('ultron-eye-left');
+            const eyeRight = document.getElementById('ultron-eye-right');
+            const mouthGrill = document.getElementById('ultron-mouth-grill');
+
+            if (eyeLeft && eyeRight) {
+                eyeLeft.style.opacity = 0.7;
+                eyeLeft.style.fill = '#ef4444';
+                eyeRight.style.opacity = 0.7;
+                eyeRight.style.fill = '#ef4444';
+            }
+            if (mouthGrill) {
+                mouthGrill.style.opacity = 0.4;
+                mouthGrill.style.stroke = '#ef4444';
+                mouthGrill.style.strokeWidth = '1.5';
+            }
+        }
+
         // Lightbox Event Listeners
         UI.closeImageModalBtn.addEventListener('click', () => {
             UI.imageModal.classList.add('hidden');
@@ -1109,6 +1424,22 @@
         UI.imageModal.addEventListener('click', (e) => {
             if (e.target === UI.imageModal) {
                 UI.imageModal.classList.add('hidden');
+            }
+        });
+
+        // 🚀 Autoconnect & Wake Word Start on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Start wake word detection immediately
+            startWakeWordDetection();
+
+            // Check if key is already saved to localStorage
+            const savedKey = localStorage.getItem('gemini_live_api_key');
+            if (savedKey) {
+                UI.apiKeyInput.value = savedKey;
+                // Automatically connect in background
+                setTimeout(() => {
+                    UI.startBtn.click();
+                }, 500);
             }
         });
     </script>
